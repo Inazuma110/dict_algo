@@ -4,3 +4,4 @@ set<int> s(vec.begin(), vec.end());
 
 vector<int> vec2(s.begin(), s.end());
 // set to vec
+ベクター内要素の重複削除可能
