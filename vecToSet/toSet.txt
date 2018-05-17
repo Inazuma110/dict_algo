@@ -1,0 +1,6 @@
+set<int> s(vec.begin(), vec.end());
+// vec to set
+
+
+vector<int> vec2(s.begin(), s.end());
+// set to vec
