@@ -11,8 +11,6 @@ ll factorial(int n){
   res *= n;
   if (n > 1) {
     factorial(n-1);
-  }else{
-    return res;
   }
   return res;
 }
