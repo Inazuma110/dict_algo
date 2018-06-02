@@ -5,6 +5,7 @@ using namespace std;
 typedef long long ll;
 typedef pair<ll,ll> p;
 
+// 要素に対応する値は自分の根。根は要素数の-1倍したものを代入する。
 // 根ならそのグループの要素数(負)が、子であれば親の番号が入る。初期値-1。
 vector<int> uni(10000, -1);
 
@@ -14,7 +15,11 @@ int root(int a)
   // uni[a]が負の値なら親はa自身
   if (uni[a] < 0) return a;
   // 正の値であれば、親ルートを調べ戻り値で根に直接つなぐ。
-  uni[a] = root(uni[a]);
+  else {
+    uni[a] = root(uni[a]);
+    return uni[a];
+    // return uni[a] = root(uni[a]);
+  }
 }
 
 // 頂点aとbをつなぐ、もともと同じグループの場合falseを返す。
@@ -52,20 +57,14 @@ int size(int a)
 
 int main()
 {
-  // for (int i = 1; i < 10; i++)
-  // {
-  //   uni[i] = i;
-  // }
-  // cout << connect(2,3) << endl;
-//   cout << root(3) << endl;
-//   cout << isConnect(1,3) << endl;
-//   // cout << size(1) << endl;
-//   cout << connect(2, 5) << endl;
-//   cout << isConnect(1, 5) << endl;
-//   cout << connect(3, 2) << endl;
-//   cout << isConnect(1, 5) << endl;
-//   // cout << size(3) << endl;
-//   cout << root(5) << endl;
-//
-//   return 0;
+  // connect(2,3)
+  // cout << root(3) << endl;
+  // cout << size(2) << endl;
+  // cout << isConnect(2,3) << endl;
+  // cout << connect(2, 5) << endl;
+  // cout << size(2) << endl;
+  // cout << root(5) << endl;
+  // cout << size(5) << endl;
+
+  return 0;
 }
