@@ -8,9 +8,10 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> p;
 
-const int h = 5, w = 4;
+const int h = 1, w = 1;
 vector<vector<int>> dp(h+1,vector<int>(w+1, 0));
 
+// その地点からゴールまでたどるルートｈいくつあるか
 int dfs(int nh, int nw)
 {
   if(nh > h || nw > w) return 0;
