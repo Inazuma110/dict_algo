@@ -23,6 +23,20 @@ int count_divisor(int n){
   return res;
 }
 
+// map<int, int> mp;
+//
+// // O(root(n))
+// void count_divisor(int n){
+//   for (int i = 2; n > 1;)
+//   {
+//     if(n % i == 0){
+//       mp[i]++;
+//       n /= i;
+//     } else i++;
+//   }
+// }
+
+
 int main(){
 
 }
