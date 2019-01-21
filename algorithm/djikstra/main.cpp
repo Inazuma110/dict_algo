@@ -31,10 +31,10 @@ void printNode(vector<Node> v){
 
 }
 
-int djikstra(vector<Node> v){
+int djikstra(vector<Node> v, int start, int goal){
   int nodeNum = int(v.size());
   v[0].minCost = 0;
-  int now = 0;
+  int now = start;
   while(true) {
     // printNode(v);
     v[now].done = true;
@@ -55,7 +55,7 @@ int djikstra(vector<Node> v){
       }
     }
     now = minNodeIndex;
-    if(now >= int(v.size())-1) return v[now].minCost;
+    if(now == goal) return v[now].minCost;
   }
 }
 
@@ -71,5 +71,5 @@ int main(){
     v[to].to.push_back(from);
     v[to].cost.push_back(cost);
   }
-  cout << djikstra(v) << endl;
+  cout << djikstra(v, 0, 4) << endl;
 }
