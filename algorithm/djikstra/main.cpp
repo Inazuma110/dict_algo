@@ -1,61 +1,75 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-#define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#if __has_include("print.hpp")
+  #include "print.hpp"
+#endif
+
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define itn long long
 
 typedef long long ll;
-typedef pair<ll,ll> p;
+typedef pair<int, int> p;
 
-int n, m;
+struct Node {
+  vector<int> to;
+  vector<int> cost;
+  bool done = false;
+  int minCost = INT_MAX;
+};
 
-int djikstra(int from, int to, vector<vector<p>> graph)
-{
-  // 大きな値で距離を初期化。
-  vector<int> distance(n, INT_MAX);
-  // 頂点に訪れたかどうかを示すcheckをfalseで初期化。
-  vector<bool> check(n, false);
-  distance[from] = 0;
-  // 頂点の数だけforをまわす。
-  for(int i = 0; i < n; i++)
-  {
-    int now = 0;
-    int nd = INT_MAX;
-    for(int j = 0; j < n; j++)
-    {
-      if(nd > distance[j] && !check[j])
-      {
-        nd = distance[j];
-        now = j;
-      }
-    }
-    if(nd == INT_MAX) break;
-    check[now] = true;
-
-    for(int j = 0; j < int(graph[now].size()); j++)
-    {
-      int next = graph[now].first;
-      int nextd = distance[now] + graph[now].second;
-      if(nextd < distance[next]) distance[next] = next;
-    }
+void printNode(vector<Node> v){
+  int nodeNum = int(v.size());
+  cout << "Node vector" << endl;
+  for (int i = 0; i < nodeNum; i++) {
+    print(v[i].to);
+    print(v[i].cost);
+    cout << v[i].done << endl;
+    cout << v[i].minCost << endl;
+    cout << "======" << endl;
   }
-  return distance[to];
+
 }
 
-int main()
-{
-  cin >> n >> m;
-  vector<vector<p>> graph(n, vector<p>());
-  for (int i = 0; i < m; i++)
-  {
-    int tmp1, tmp2, tmp3;
-    cin >> tmp1 >> tmp2 >> tmp3;
-    graph[tmp1-1].push_back({tmp2, tmp3});
-    graph[tmp2-1].push_back({tmp1, tmp3});
+int djikstra(vector<Node> v){
+  int nodeNum = int(v.size());
+  v[0].minCost = 0;
+  int now = 0;
+  while(true) {
+    // printNode(v);
+    v[now].done = true;
+    int edgeNum = int(v[now].to.size());
+    for (int i = 0; i < edgeNum; i++) {
+      int nextNodeIndex = v[now].to[i];
+      v[nextNodeIndex].minCost =
+        min(v[nextNodeIndex].minCost, v[now].minCost + v[now].cost[i]);
+    }
+
+    int minNodeIndex = -1;
+    int minNodeCost = INT_MAX;
+    for (int i = 0; i < nodeNum; i++) {
+      if(i == now) continue;
+      if(minNodeCost > v[i].minCost && !v[i].done){
+        minNodeIndex = i;
+        minNodeCost = v[i].minCost;
+      }
+    }
+    now = minNodeIndex;
+    if(now >= int(v.size())-1) return v[now].minCost;
   }
-  // for(auto a : from) cout << a << endl;
-  cout << djikstra(1, 2, graph) << endl;
+}
+
+int main(){
+  int nodeNum, edgeNum;
+  cin >> nodeNum >> edgeNum;
+  vector<Node> v(nodeNum);
+  for (int i = 0; i < edgeNum; i++) {
+    int to, from, cost;
+    cin >> to >> from >> cost;
+    v[from].to.push_back(to);
+    v[from].cost.push_back(cost);
+    v[to].to.push_back(from);
+    v[to].cost.push_back(cost);
+  }
+  cout << djikstra(v) << endl;
 }
