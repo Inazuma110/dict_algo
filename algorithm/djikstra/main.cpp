@@ -18,26 +18,14 @@ struct Node {
   int minCost = INT_MAX;
 };
 
-void printNode(vector<Node> v){
-  int nodeNum = int(v.size());
-  cout << "Node vector" << endl;
-  for (int i = 0; i < nodeNum; i++) {
-    print(v[i].to);
-    print(v[i].cost);
-    cout << v[i].done << endl;
-    cout << v[i].minCost << endl;
-    cout << "======" << endl;
-  }
-
-}
-
 int djikstra(vector<Node> v, int start, int goal){
   int nodeNum = int(v.size());
-  v[0].minCost = 0;
+  v[start].minCost = 0;
   int now = start;
   while(true) {
     // printNode(v);
     v[now].done = true;
+    if(now == goal) return v[now].minCost;
     int edgeNum = int(v[now].to.size());
     for (int i = 0; i < edgeNum; i++) {
       int nextNodeIndex = v[now].to[i];
@@ -55,7 +43,6 @@ int djikstra(vector<Node> v, int start, int goal){
       }
     }
     now = minNodeIndex;
-    if(now == goal) return v[now].minCost;
   }
 }
 
@@ -71,5 +58,6 @@ int main(){
     v[to].to.push_back(from);
     v[to].cost.push_back(cost);
   }
-  cout << djikstra(v, 0, 4) << endl;
+  // cout << djikstra(v, 5, 2) << endl;
+  cout << djikstra(v, 1, 5) << endl;
 }

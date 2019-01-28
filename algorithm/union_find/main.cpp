@@ -57,14 +57,14 @@ int size(int a)
 
 int main()
 {
-  // connect(2,3)
-  // cout << root(3) << endl;
-  // cout << size(2) << endl;
-  // cout << isConnect(2,3) << endl;
-  // cout << connect(2, 5) << endl;
-  // cout << size(2) << endl;
-  // cout << root(5) << endl;
-  // cout << size(5) << endl;
+  connect(2,3);
+  cout << root(3) << endl;
+  cout << size(2) << endl;
+  cout << isConnect(2,3) << endl;
+  cout << connect(2, 5) << endl;
+  cout << size(2) << endl;
+  cout << root(5) << endl;
+  cout << size(5) << endl;
 
   return 0;
 }
