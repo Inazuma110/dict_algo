@@ -5,14 +5,17 @@ using namespace std;
 typedef long long ll;
 typedef pair<ll,ll> p;
 
-ll comb(int a, int b)
-{
-  ll res = 1;
-  for (int i = a; i > a-b ; i--)
-    res *= i;
-  for (int i = 1; i <= b; i++)
-    res /= i;
-  return res;
+long long comb(int n, int r) {
+    if(r > n - r) r = n - r; // because C(n, r) == C(n, n - r)
+    long long ans = 1;
+    int i;
+
+    for(i = 1; i <= r; i++) {
+        ans *= n - r + i;
+        ans /= i;
+    }
+
+    return ans;
 }
 
 int main()
