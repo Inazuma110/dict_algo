@@ -18,7 +18,7 @@ struct Node {
   int minCost = INT_MAX;
 };
 
-int djikstra(vector<Node> v, int start, int goal){
+int dijkstra(vector<Node> v, int start, int goal){
   int nodeNum = int(v.size());
   v[start].minCost = 0;
   int now = start;
@@ -59,5 +59,5 @@ int main(){
     v[to].cost.push_back(cost);
   }
   // cout << djikstra(v, 5, 2) << endl;
-  cout << djikstra(v, 1, 5) << endl;
+  cout << dijkstra(v, 1, 5) << endl;
 }
