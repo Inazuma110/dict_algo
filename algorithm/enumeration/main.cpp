@@ -12,12 +12,15 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> p;
 
-vector<int> enumeration(ll n){
-  vector<int> result;
-  for (int i = 1; i <= pow(n, 0.5)+1; i++) {
-    if(n % i == 0) result.push_back(i);
+vector<ll> enumeration(ll n){
+  vector<ll> result;
+  for (ll i = 1; i*i <= n; i++) {
+    if(n % i == 0){
+      result.push_back(i);
+      result.push_back(n / i);
+    }
   }
-  result.push_back(n);
+  sort(ALL(result));
   return result;
 }
 
