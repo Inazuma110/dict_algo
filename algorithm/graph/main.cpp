@@ -16,7 +16,13 @@ struct Graph {
   vector<vector<int>> cost;
   vector<bool> visited;
   vector<int> min_cost;
+  int node_num, edge_num;
 
+  Graph(int nn, int en) : node_num(nn), edge_num(en){
+    visited = vector<bool> (node_num, false);
+    min_cost = vector<int> (node_num, INT_MAX);
+    cost = vector<vector<int>> (node_num, vector<int> (node_num, -1));
+  }
 
   int dijkstra(int start, int goal){
     min_cost[start] = 0;
@@ -24,8 +30,7 @@ struct Graph {
     while(true) {
       if(now == goal) {
         int result = min_cost[now];
-        visited = vector<bool> (int(cost.size()), false);
-        min_cost = vector<int> (int(cost.size()), INT_MAX);
+        init();
         return result;
       }
 
@@ -50,6 +55,11 @@ struct Graph {
     // error
     return -1;
   }
+
+  void init(){
+    visited = vector<bool> (node_num, false);
+    min_cost = vector<int> (node_num, INT_MAX);
+  }
 };
 
 int main(){
@@ -58,10 +68,7 @@ int main(){
   int node_num, edge_num;
   cin >> node_num >> edge_num;
 
-  Graph g;
-  g.cost = vector<vector<int>> (node_num, vector<int> (node_num, -1));
-  g.visited = vector<bool> (node_num, false);
-  g.min_cost = vector<int> (node_num, INT_MAX);
+  Graph g(node_num, edge_num);
 
   for (int i = 0; i < edge_num; i++) {
     int from, to, weight;
@@ -71,6 +78,7 @@ int main(){
     g.cost[from][to] = weight;
     g.cost[to][from] = weight;
   }
+  cout << g.node_num << endl;
   cout << g.dijkstra(0, 4) << endl;
   cout << g.dijkstra(0, 3) << endl;
 }
