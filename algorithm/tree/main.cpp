@@ -16,7 +16,6 @@ struct Tree {
   int node_num;
   int edge_num;
   int diameter = -1;
-  int leaf_node;
   int far_index = -1;
   vector<vector<int>> cost;
   vector<bool> visited;
@@ -45,7 +44,9 @@ struct Tree {
   int get_diameter(int from){
     pair<int, int> i_and_d = get_far(0, 0);
     init();
-    return diameter = get_far(i_and_d.first, 0).second;
+    diameter = get_far(i_and_d.first, 0).second;
+    init();
+    return diameter;
   }
 
   void init(){
