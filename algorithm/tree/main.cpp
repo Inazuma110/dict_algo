@@ -13,23 +13,25 @@ typedef long long ll;
 typedef pair<int, int> p;
 
 struct Tree {
-  int node_num;
-  int edge_num;
-  int diameter = -1;
-  int far_index = -1;
-  vector<vector<int>> cost;
+  ll node_num;
+  ll edge_num;
+  ll diameter = -1;
+  ll far_index = -1;
+  vector<vector<ll>> to;
   vector<bool> visited;
+  vector<int> depth;
 
-  Tree(int nn) : node_num(nn){
+  Tree(ll nn) : node_num(nn){
     edge_num = node_num - 1;
-    cost = vector<vector<int>> (node_num);
+    to = vector<vector<ll>> (node_num);
     visited = vector<bool> (node_num, false);
+    depth = vector<int> (node_num);
   }
 
 
-  pair<int, int> get_far(int from, int d){
+  pair<ll, ll> get_far(ll from, ll d){
     visited[from] = true;
-    for(auto a : cost[from]){
+    for(auto a : to[from]){
       if(!visited[a]){
         get_far(a, d+1);
       }
@@ -41,8 +43,8 @@ struct Tree {
     return {far_index, diameter};
   }
 
-  int get_diameter(int from){
-    pair<int, int> i_and_d = get_far(0, 0);
+  ll get_diameter(ll from){
+    pair<ll, ll> i_and_d = get_far(0, 0);
     init();
     diameter = get_far(i_and_d.first, 0).second;
     init();
@@ -53,6 +55,13 @@ struct Tree {
     visited = vector<bool> (node_num, false);
   }
 
+  int set_depth(int from, int d){
+    visited[from] = true;
+    for(auto a : to[from]){
+      if(!visited[a]) set_depth(a, d+1);
+    }
+    return depth[from] = d;
+  }
 };
 
 int main(){
@@ -66,8 +75,8 @@ int main(){
     cin >> from >> to;
     from--;
     to--;
-    t.cost[from].push_back(to);
-    t.cost[to].push_back(from);
+    t.to[from].push_back(to);
+    t.to[to].push_back(from);
   }
   t.get_diameter(0);
   cout << t.diameter << endl;
