@@ -25,34 +25,24 @@ struct Graph {
   }
 
   int dijkstra(int start, int goal){
+    priority_queue<p, vector<p>, greater<p>> pq;
+    pq.push({0, start});
     min_cost[start] = 0;
-    int now = start;
-    while(true) {
-      if(now == goal) {
-        int result = min_cost[now];
-        init();
-        return result;
-      }
+    while(!pq.empty()) {
+      int now_cost = pq.top().first;
+      int now = pq.top().second;
+      pq.pop();
+      if(min_cost[now] < now_cost) continue;
 
       visited[now] = true;
-      for (int i = 0; i < int(cost.size()); i++) {
-        if(cost[now][i] != -1){
-          min_cost[i] = min(min_cost[i], min_cost[now]+cost[now][i]);
+      for (int i = 0; i < int(cost[now].size()); i++) {
+        if(!visited[now] || (cost[now][i] != -1 && min_cost[i] >= min_cost[now]+cost[now][i])){
+          min_cost[i] = min_cost[now]+cost[now][i];
+          pq.push({min_cost[i], i});
         }
       }
-
-      int min_node_index = -1;
-      int min_node_cost = INT_MAX;
-      for (int i = 0; i < int(cost.size()); i++) {
-        if((min_node_cost > min_cost[i]) && !visited[i]){
-          min_node_index = i;
-          min_node_cost = min_cost[i];
-        }
-      }
-      now = min_node_index;
     }
 
-    // error
     return -1;
   }
 
@@ -78,7 +68,8 @@ int main(){
     g.cost[from][to] = weight;
     g.cost[to][from] = weight;
   }
-  cout << g.node_num << endl;
-  cout << g.dijkstra(0, 4) << endl;
-  cout << g.dijkstra(0, 3) << endl;
+  // cout << g.node_num << endl;
+  g.dijkstra(0, 4);
+  cout << g.min_cost[4] << endl;
+  cout << g.min_cost[3] << endl;
 }
