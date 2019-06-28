@@ -48,21 +48,24 @@ struct Graph {
 int main(){
   ios::sync_with_stdio(false);
   cin.tie(0);
-  int node_num, edge_num;
-  cin >> node_num >> edge_num;
+  int node_num, edge_num, r;
+  cin >> node_num >> edge_num >> r;
+  // r--;
 
   Graph g(node_num, edge_num);
 
   for (int i = 0; i < edge_num; i++) {
     int from, to, weight;
     cin >> from >> to >> weight;
-    from--;
-    to--;
+    // from--;
+    // to--;
     g.cost[from].push_back({to, weight});
-    g.cost[to].push_back({from, weight});
+    // g.cost[to].push_back({from, weight});
   }
   // cout << g.node_num << endl;
-  g.dijkstra(0);
-  cout << g.min_cost[4] << endl;
-  cout << g.min_cost[3] << endl;
+  g.dijkstra(r);
+  for (int i = 0; i < node_num; i++) {
+    if(g.min_cost[i] == INT_MAX) cout << "INF" << endl;
+    else cout << g.min_cost[i] << endl;
+  }
 }
