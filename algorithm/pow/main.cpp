@@ -13,11 +13,11 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> p;
 
-long mod_pow(ll a, int p){
+ll mod_pow(ll a, int p){
   if(p == 0) return 1;
   if(p % 2 == 0){
     int half_p = p / 2;
-    long half = mod_pow(a, half_p);
+    ll half = mod_pow(a, half_p);
     return half * half % MOD;
   }else{
     return a * mod_pow(a, p-1) % MOD;
