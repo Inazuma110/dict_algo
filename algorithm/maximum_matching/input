@@ -1,3 +1,21 @@
+3 4 6
+0 0
+0 2
+0 3
+1 1
+2 1
+2 3
+3 3
+http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_7_A&lang=jp
+
+o o x
+o x o
+x o x
+
+ant book p196
+
+
+
 10 10
 o   x   x   o   x   x   x   x   o   x
 x   x   x   o   x   x   o   x   x   x
@@ -9,3 +27,5 @@ x   x   x   o   x   x   o   x   x   x
 o   x   o   x   x   x   x   x   o   x
 x   o   x   x   o   x   x   x   x   x
 x   x   x   o   x   x   x   x   x   x
+
+https://qiita.com/drken/items/e805e3f514acceb87602

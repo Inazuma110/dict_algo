@@ -21,10 +21,10 @@ typedef pair<ll, ll> p;
 
 struct BipartiteMatching {
   vector< vector< int > > graph;
-  vector< int > match, alive, used;
+  vector< int > match, used;
   int timestamp;
 
-  BipartiteMatching(int n) : graph(n), alive(n, 1), used(n, 0), match(n, -1), timestamp(0) {}
+  BipartiteMatching(int n) : graph(n), used(n, 0), match(n, -1), timestamp(0) {}
 
   void add_edge(int u, int v) {
     graph[u].push_back(v);
@@ -35,7 +35,9 @@ struct BipartiteMatching {
     used[idx] = timestamp;
     for(auto &to : graph[idx]) {
       int to_match = match[to];
-      if(alive[to] == 0) continue;
+      // とりあえずつなげる
+      // つながりたいやつがもう繋がってたら，そいつが他のやつに繋がれないか探す
+      // つまり増加パスを探すとも言える
       if(to_match == -1 || (used[to_match] != timestamp && dfs(to_match))) {
         match[idx] = to;
         match[to] = idx;
@@ -48,7 +50,6 @@ struct BipartiteMatching {
   int bipartite_matching() {
     int ret = 0;
     for(int i = 0; i < int(graph.size()); i++) {
-      if(alive[i] == 0) continue;
       if(match[i] == -1) {
         ++timestamp;
         ret += dfs(i);
@@ -69,16 +70,24 @@ struct BipartiteMatching {
 int main(){
   ios::sync_with_stdio(false);
   cin.tie(0);
-  int n, m;
-  cin >> n >> m;
-  BipartiteMatching bm(n+m);
-  rep(i, n) rep(j, m){
-    string tmp;
-    cin >> tmp;
-    bool is_edge = tmp == "o";
-    if(is_edge) bm.add_edge(i, n+j);
+  // int n, m;
+  // cin >> n >> m;
+  // rep(i, n) rep(j, m){
+  //   string tmp;
+  //   cin >> tmp;
+  //   bool is_edge = tmp == "o";
+  //   if(is_edge) bm.add_edge(i, n+j);
+  // }
+  int x, y, m;
+  cin >> x >> y >> m;
+  BipartiteMatching bm(x+y);
+  rep(i, m){
+    int from, to;
+    cin >> from >> to;
+    to += x;
+    bm.add_edge(from, to);
   }
   int res = bm.bipartite_matching();
   cout << res << endl;
-  bm.output();
+  // bm.output();
 }
