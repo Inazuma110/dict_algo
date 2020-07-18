@@ -2,7 +2,7 @@
 using namespace std;
 
 #if __has_include("print.hpp")
-  #include "print.hpp"
+#include "print.hpp"
 #endif
 
 #define all(x) (x).begin(), (x).end()
@@ -11,53 +11,69 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> p;
 
-struct Node {
-  vector<int> to;
-  vector<int> cost;
-  bool done = false;
-  int minCost = INT_MAX;
+struct Edge {
+  long long to;
+  long long cost;
 };
+using Graph = vector<vector<Edge>>;
+using P = pair<long, int>;
+const long long INF = 1LL << 60;
 
-int dijkstra(vector<Node> v, int start, int goal){
-  int nodeNum = int(v.size());
-  v[start].minCost = 0;
-  int now = start;
-  while(true) {
-    // printNode(v);
-    v[now].done = true;
-    if(now == goal) return v[now].minCost;
-    int edgeNum = int(v[now].to.size());
-    for (int i = 0; i < edgeNum; i++) {
-      int nextNodeIndex = v[now].to[i];
-      v[nextNodeIndex].minCost =
-        min(v[nextNodeIndex].minCost, v[now].minCost + v[now].cost[i]);
+
+/* dijkstra(G,s,dis,prev)
+   入力：グラフ G, 開始点 s, 距離を格納する dis, 最短経路の前の点を記録するprev
+   計算量：O(|E|log|V|)
+   副作用：dis, prevが書き換えられる
+   */
+void dijkstra(const Graph &G, int s, vector<long long> &dis, vector<int> &prev) {
+  int N = G.size();
+  dis.resize(N, INF);
+  prev.resize(N, -1); // 初期化
+  priority_queue<P, vector<P>, greater<P>> pq;
+  dis[s] = 0;
+  pq.emplace(dis[s], s);
+  while (!pq.empty()) {
+    P p = pq.top();
+    pq.pop();
+    int v = p.second;
+    if (dis[v] < p.first) {
+      continue;
     }
-
-    int minNodeIndex = -1;
-    int minNodeCost = INT_MAX;
-    for (int i = 0; i < nodeNum; i++) {
-      if(i == now) continue;
-      if(minNodeCost > v[i].minCost && !v[i].done){
-        minNodeIndex = i;
-        minNodeCost = v[i].minCost;
+    for (auto &e : G[v]) {
+      if (dis[e.to] > dis[v] + e.cost) {
+        dis[e.to] = dis[v] + e.cost;
+        prev[e.to] = v; // 頂点 v を通って e.to にたどり着いた
+        pq.emplace(dis[e.to], e.to);
       }
     }
-    now = minNodeIndex;
   }
+}
+/* get_path(prev, t)
+   入力：dijkstra で得た prev, ゴール t
+   出力： t への最短路のパス
+   */
+vector<int> get_path(const vector<int> &prev, int t) {
+  vector<int> path;
+  for (int cur = t; cur != -1; cur = prev[cur]) {
+    path.push_back(cur);
+  }
+  reverse(path.begin(), path.end()); // 逆順なのでひっくり返す
+  return path;
 }
 
 int main(){
-  int nodeNum, edgeNum;
-  cin >> nodeNum >> edgeNum;
-  vector<Node> v(nodeNum);
-  for (int i = 0; i < edgeNum; i++) {
-    int to, from, cost;
-    cin >> to >> from >> cost;
-    v[from].to.push_back(to);
-    v[from].cost.push_back(cost);
-    v[to].to.push_back(from);
-    v[to].cost.push_back(cost);
+  int v, e, r;
+  cin >> v >> e >> r;
+  Graph g(v);
+  for (int i = 0; i < e; ++i) {
+    int from, to, cost;
+    cin >> from >> to >> cost;
+    g[from].push_back({to, cost});
+    g[to].push_back({from, cost});
   }
-  // cout << djikstra(v, 5, 2) << endl;
-  cout << dijkstra(v, 1, 5) << endl;
+  vector<ll> dist;
+  vector<int> prev;
+  dijkstra(g, 0, dist, prev);
+  print(dist);
+  print(prev);
 }
